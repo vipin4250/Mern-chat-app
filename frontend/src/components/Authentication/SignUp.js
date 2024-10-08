@@ -4,6 +4,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for show/hid
 import { useHistory } from "react-router";
 import { ChatState } from "../../Context/ChatProvider"; // Import ChatState to access context
 
+const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+
 const Signup = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
@@ -38,7 +40,7 @@ const Signup = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/user",
+        `${ENDPOINT}/api/user`,
         { name, email, password, pic },
         config
       );

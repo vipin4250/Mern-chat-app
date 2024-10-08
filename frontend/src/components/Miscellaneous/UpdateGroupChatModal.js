@@ -14,6 +14,9 @@ import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
 
+const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+
+
 const styles = {
   fadeIn: {
     animation: "fadeInAnimation 0.5s ease-in-out",
@@ -86,7 +89,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`${ENDPOINT}/api/user?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -106,7 +109,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `/api/chat/rename`,
+        `${ENDPOINT}/api/chat/rename`,
         { chatId: selectedChat._id, chatName: groupChatName },
         config
       );
@@ -140,7 +143,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupadd`,
+        `${ENDPOINT}/api/chat/groupadd`,
         { chatId: selectedChat._id, userId: user1._id },
         config
       );
@@ -169,7 +172,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupremove`,
+        `${ENDPOINT}/api/chat/groupremove`,
         { chatId: selectedChat._id, userId: user1._id },
         config
       );

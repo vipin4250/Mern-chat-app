@@ -12,6 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
 
   const submitHandler = async () => {
     setLoading(true);
@@ -29,7 +30,7 @@ const Login = () => {
       };
   
       const { data } = await axios.post(
-        "/api/user/login",
+        `${ENDPOINT}/api/user/login`,
         { email, password },
         config
       );
