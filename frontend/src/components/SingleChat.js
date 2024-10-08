@@ -11,8 +11,7 @@ import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 import axios from "axios";
 
-// const ENDPOINT = "http://localhost:3000"; // Your backend endpoint
-const ENDPOINT = "https://temp-repo-chat-jafp.vercel.app/"; // Your backend endpoint
+const ENDPOINT = "http://localhost:3000"; // Your backend endpoint
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
