@@ -3,8 +3,10 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons for show/hide password
 import { useHistory } from "react-router";
 import { ChatState } from "../../Context/ChatProvider"; // Import ChatState to access context
+import { ENDPOINT } from "../../config/variable";  // Adjust the path if necessary
 
-const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+
+// const ENDPOINT = "http://localhost:3000"; // Updated backend endpoint
 
 const Signup = () => {
   const [show, setShow] = useState(false);

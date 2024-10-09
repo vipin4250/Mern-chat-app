@@ -7,8 +7,10 @@ import GroupChatModal from "./Miscellaneous/GroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 import { AiOutlinePlus } from "react-icons/ai";
 import io from "socket.io-client"; // Import socket.io client
+import { ENDPOINT } from "../config/variable";  // Adjust the path if necessary
 
-const ENDPOINT = "http://localhost:3000"; // Replace with your backend URL
+
+// const ENDPOINT = "http://localhost:3000"; // Replace with your backend URL
 let socket;
 
 const MyChats = ({ fetchAgain }) => {
@@ -32,6 +34,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
       const { data } = await axios.get(`${ENDPOINT}/api/chat`, config);
+      console.log("------", data, "-----------");
       setChats(data);
     } catch (error) {
       console.error("Error fetching chats:", error.response ? error.response.data : error.message);

@@ -10,8 +10,10 @@ import UpdateGroupChatModal from "./Miscellaneous/UpdateGroupChatModal";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 import axios from "axios";
+import { ENDPOINT } from "../config/variable";  // Adjust the path if necessary
 
-const ENDPOINT = "http://localhost:3000"; // Your backend endpoint
+
+// const ENDPOINT = "http://localhost:3000"; // Your backend endpoint
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -22,6 +24,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const { selectedChat, setSelectedChat, user, notification, setNotification } = ChatState();
+
+  const [showToast, setShowToast] = useState(false); // State for Toast
+  const [toastMessage, setToastMessage] = useState("");
 
   const defaultOptions = {
     loop: true,
@@ -44,21 +49,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       setLoading(true);
 
-      const { data } = await axios.get(`${ENDPOINT}api/message/${selectedChat._id}`, config);
+      const { data } = await axios.get(`${ENDPOINT}/api/message/${selectedChat._id}`, config);
+      console.log("=============", data, "=============");
       setMessages(data);
       setLoading(false);
 
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
-      Toast.error("Failed to Load the Messages");
+      setToastMessage("Failed to Load the Messages vipin", error.response.data.message);
+      setShowToast(true); // Show Toast on error
     }
   };
 
   const sendMessage = async (event) => {
     if (event.key && event.key !== "Enter") return;
-    
+
     event.preventDefault();
-  
+
     if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
@@ -70,7 +77,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          `${ENDPOINT}api/message`,
+          `${ENDPOINT}/api/message`,
           {
             content: newMessage,
             chatId: selectedChat,
@@ -80,7 +87,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
-        Toast.error("Failed to send the Message");
+        setToastMessage("Failed to send the Message");
+        setShowToast(true); // Show Toast on error
       }
     }
   };
@@ -168,7 +176,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     <div className="flex-grow-1 text-center">
                       <h2 className="mb-0">{selectedChat.chatName.toUpperCase()}</h2>
                     </div>
-                    <div className="d-flex justify-content-end" style={{ minWidth: '100px' }}> {/* Set a minimum width to ensure it stays on the right */}
+                    <div className="d-flex justify-content-end" style={{ minWidth: '100px' }}>
                       <UpdateGroupChatModal
                         fetchMessages={fetchMessages}
                         fetchAgain={fetchAgain}
@@ -177,7 +185,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     </div>
                   </div>
                 </>
-
               )}
             </h2>
           </div>
@@ -186,14 +193,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             className="d-flex flex-column justify-content-end"
             style={{
               backgroundColor: "#E8E8E8",
-              height: "80vh", // Ensure the height takes up the available space
-              width: "100%",  // This makes sure the width is consistent with the parent container
-              overflowY: "auto", // Enable vertical scrolling
+              height: "80vh", 
+              width: "100%", 
+              overflowY: "auto", 
               borderRadius: "8px",
               padding: "15px",
               boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)", 
               marginTop: "15px",
-              maxWidth: "100%", // Ensure no overflow beyond parent
+              maxWidth: "100%", 
             }}
           >
             {loading ? (
@@ -214,7 +221,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   placeholder="Enter a message..."
                   value={newMessage}
                   onChange={typingHandler}
-                  onKeyDown={sendMessage} // Moved here
+                  onKeyDown={sendMessage}
                   style={{ backgroundColor: "#E0E0E0", borderRadius: "5px" }}
                 />
                 <Button variant="primary" onClick={sendMessage}>Send</Button>
@@ -223,9 +230,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           </div>
         </>
       ) : (
-        <div className="d-flex align-items-center justify-content-center" style={{ height: "100%" }}>
-          <h2 className="text-center">Click on a user to start chatting</h2>
+        <div className="d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
+          <h2 className="text-muted">Click on a user to start chatting</h2>
         </div>
+      )}
+
+      {showToast && (
+        <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide>
+          <Toast.Body>{toastMessage}</Toast.Body>
+        </Toast>
       )}
     </>
   );

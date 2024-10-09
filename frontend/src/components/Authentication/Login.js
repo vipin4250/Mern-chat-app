@@ -3,7 +3,11 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 // import { ChatState } from "../../Context/ChatProvider";
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import icons for show/hide password
+import { ENDPOINT } from "../../config/variable";  // Adjust the path if necessary
 
+
+/*************  ✨ Codeium Command ⭐  *************/
+/******  6462f845-ed4d-4f8f-a831-5381e9f60ee7  *******/
 const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
@@ -12,7 +16,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+  // const ENDPOINT = "http://localhost:3000"; // Updated backend endpoint
 
   const submitHandler = async () => {
     setLoading(true);

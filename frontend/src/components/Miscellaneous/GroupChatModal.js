@@ -4,8 +4,10 @@ import axios from "axios";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import UserListItem from "../userAvatar/UserListItem";
+import { ENDPOINT } from "../../config/variable";  // Adjust the path if necessary
 
-const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+
+// const ENDPOINT = "http://localhost:3000"; // Updated backend endpoint
 
 const GroupChatModal = ({ children }) => {
   const [show, setShow] = useState(false);

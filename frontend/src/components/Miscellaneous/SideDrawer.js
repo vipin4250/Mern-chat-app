@@ -8,8 +8,10 @@ import { ChatState } from "../../Context/ChatProvider";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./SideDrawer.css"; // Importing custom CSS for modal
+import { ENDPOINT } from "../../config/variable";  // Adjust the path if necessary
 
-const ENDPOINT = "https://localhost:3000"; // Updated backend endpoint
+
+// const ENDPOINT = "http://localhost:3000"; // Updated backend endpoint
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
